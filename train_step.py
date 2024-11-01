@@ -30,6 +30,8 @@ parser.add_argument('-num_steps', help='number of epochs', default=90000, type=i
 parser.add_argument('-checkpoint', help='resume checkpoint', type=str)
 parser.add_argument('-save_epoch', help='save per epoch', default=10, type=int)
 parser.add_argument('-save_step', help='save per step', default=1000, type=int)
+parser.add_argument('-train_data_dir', help='train dataset path', type=str)
+parser.add_argument('-val_data_dir', help='test dataset path', type=str)
 args = parser.parse_args()
 
 num_steps = args.num_steps
@@ -38,11 +40,12 @@ learning_rate = args.learning_rate
 crop_size = args.crop_size
 train_batch_size = args.train_batch_size
 epoch_start = args.epoch_start
-#lambda_loss = args.lambda_loss
 val_batch_size = args.val_batch_size
 exp_name = args.exp_name
 num_epochs = args.num_epochs
 save_epoch = args.save_epoch
+train_data_dir = args.train_data_dir
+val_data_dir = args.val_data_dir
 
 #create directory to save checkpoints
 if not os.path.exists(exp_name):
@@ -68,9 +71,8 @@ print(
                                                                                                          crop_size,
                                                                                                          train_batch_size,
                                                                                                          val_batch_size,))
+print(f'training dataset path:{train_data_dir}, testing dataset path:{val_data_dir}')
 
-train_data_dir = './data/allweather/train/'
-val_data_dir = './data/allweather/test/'
 
 # --- Gpu device --- #
 device_ids = [Id for Id in range(torch.cuda.device_count())]
@@ -90,11 +92,12 @@ net = nn.DataParallel(net, device_ids=device_ids)
 
 # --- Load the network weight --- #
 chk = args.checkpoint
-try:
-    net.load_state_dict(torch.load(chk))
-    print('--- weight loaded ---')
-except:
-    raise FileNotFoundError(f"The file at path '{chk}' does not exist.")
+if chk is not None:
+    try:
+        net.load_state_dict(torch.load(chk))
+        print('--- weight loaded ---')
+    except:
+        raise FileNotFoundError(f"The file at path '{chk}' does not exist.")
 
 
 # --- Load training data and validation/test data --- #
@@ -102,7 +105,7 @@ except:
 labeled_name = 'train.txt'
 
 
-val_filename1 = 'test_all.txt'
+val_filename1 = 'test.txt'
 
 # --- Load training data and validation/test data --- #
 lbl_train_data_loader = DataLoader(TrainData(crop_size, train_data_dir, labeled_name, random_flip=True, random_rotate=True), batch_size=train_batch_size,
