@@ -20,6 +20,7 @@ parser.add_argument('-val_batch_size', help='Set the validation/test batch size'
 parser.add_argument('-save_place', help='directory for saving the networks of the experiment', type=str)
 parser.add_argument('-seed', help='set random seed', default=19, type=int)
 parser.add_argument('-checkpoint', help='select checkpoint of model', type=str)
+parser.add_argument('-val_data_dir', help='test dataset path', type=str)
 args = parser.parse_args()
 
 val_batch_size = args.val_batch_size
@@ -41,7 +42,7 @@ if seed is not None:
     print('Seed:\t{}'.format(seed))
 
 # --- Set category-specific hyper-parameters  --- #
-val_data_dir = '../TransWeather/data/snow100k/test_all/Snow100K-L/'
+val_data_dir = args.val_data_dir
 
 # --- Gpu device --- #
 device_ids = [Id for Id in range(torch.cuda.device_count())]
@@ -50,7 +51,7 @@ print(device)
 
 # --- Validation data loader --- #
 
-val_filename = 'test_all.txt'  ## This text file should contain all the names of the images and must be placed in ./data/test/ directory
+val_filename = 'test.txt'  ## This text file should contain all the names of the images and must be placed in ./data/test/ directory
 
 val_data_loader = DataLoader(ValData(val_data_dir, val_filename), batch_size=val_batch_size, shuffle=False,
                              num_workers=1)

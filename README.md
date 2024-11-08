@@ -2,16 +2,6 @@
 
 This is the source code for WeatherRemover(WeatherRemover: All-in-one Adverse Weather Removal with Multi-scale Feature Map Compression).
 
-## Abstract
-
-Photographs taken in adverse weather conditions often suffer blurriness, occlusion, and low brightness due to rain, snow, and fog interference. These issues can significantly hinder the performance of subsequent computer vision tasks, making removing weather effects a crucial step in image enhancement. Existing methods primarily target specific weather conditions, with only a few capable of handling multiple weather scenarios. However, these approaches often struggle with suboptimal performance, lengthy inference times, or large parameter sizes. In this study, we introduce the WeatherRemover model, designed to efficiently and flexibly eliminate various weather elements from images. The core component of our model employs a UNet-like network architecture combined with a gating mechanism and a Transformer. This integration allows for selective information learning and capturing features across different scales through upsampling and downsampling techniques. To further enhance the Transformer's performance, we implement two optimization strategies. First, we use linear Spatial Reduction Attention to compress feature maps, which reduces computational demands and inference times. Second, we apply channel-wise attention based on convolutional neural networks to handle feature maps of varying scales. These mechanisms ensure that both input and output images remain consistent in size and improve the model's ability to learn local features.
-
-## Impact Statement
-
-Removing the interference caused by adverse weather conditions in images is a crucial task in image enhancement. However, most current models are designed to handle only single-weather scenarios. A few models can address multiple weather conditions, but they often suffer from inefficiencies due to large parameter sizes, long inference times, or suboptimal restoration effects. The WeatherRemover model proposed in this paper can handle both single-weather and multi-weather tasks efficiently. Experimental results demonstrate that our model excels in both single and multi-weather removal tasks. Moreover, the model's relatively lightweight configuration underscores its efficiency and flexibility. 
-
- 
-
 ## Architecture
 
 ![Model Architecture](./figure/Backbone.png)
@@ -24,9 +14,24 @@ The project is built with Python 3.11.5,CUDA 11.8.Using the following command to
 pip install -r requirements.txt
 ```
 
+Specifically, our project requires the following libraries:
+
+```
+einops==0.8.0
+matplotlib==3.9.1
+numpy==2.0.1
+opencv_python_headless==4.8.1.78
+Pillow==10.4.0
+timm==1.0.8
+torch==2.0.0
+torchvision==0.15.1
+```
+
 ## Checkpoints
 
 Checkpoints are available on [Baidu Netdisk](https://pan.baidu.com/s/1p_O4WWGI4xyj4xA-WaSGeg?pwd=xf1g), password:xf1g
+
+We also offer the link of [Google Drive](https://drive.google.com/file/d/1y8-QKdJOEKyhfkwVZ7YdQBJD4LXMg97q/view?usp=drive_link)
 
 ## Dataset Structure
 
@@ -42,10 +47,10 @@ Your_dataset
 |── test
 |	|── input
 |	|── gt
-|	|── test_all.txt
+|	|── test.txt
 ```
 
-The file `train.txt` contains the relative paths of each image in the training set within the `input` directory, such as `input/1.png`. The file `test_all.txt` contains the relative paths of each image in the test set within the `input` directory.Note that the filenames in the `input` directory must be the same as the filenames in the `gt` directory.
+The file `train.txt` contains the relative paths of each image in the training set within the `input` directory, such as `input/1.png`. The file `test.txt` contains the relative paths of each image in the test set within the `input` directory. Note that the filenames in the `input` directory must be the same as the filenames in the `gt` directory.
 
 ## Document Introduction
 
@@ -55,30 +60,75 @@ The file `train.txt` contains the relative paths of each image in the training s
 
 All experiments were completed on a single **NVIDIA RTX 3090**.
 
-First, modify the value of `train_data_dir` to the path of the training set and the value of `val_data_dir` to the path of the test set in `train_step.py`. Then, use the following command to start the training.
+`train_step.py` is used to train our model with the following parameter description:
+
+`-exp_name`: Specify the path for saving checkpoints.
+
+`-save_step`: Specify the interval for saving checkpoints.
+
+`-crop_size`: Specify the image size to be used during training.
+
+`-checkpoint`: Specify the path of the checkpoint used for training recovery.
+
+`-learning_rate`: Specify the learning rate.
+
+`-num_steps`: Specify the number of training iterations.
+
+`-train_batch_size`: Batch size for training.
+
+`-train_data_dir`: Training set directory.
+
+`-val_data_dir`: Test set directory
+
+**Demo** for how to perform the training:
 
 ```
-python train_step.py -learning_rate 0.0003 -num_steps 30000 -train_batch_size 8 -crop_size 128 128 -save_step 10000 -exp_name ./checkpoint/raindrop [-checkpoint]
+python train_step.py -train_data_dir ./data/raindrop/train -val_data_dir ./data/raindrop/test_a -learning_rate 0.0003 -num_steps 80000 -train_batch_size 8 -crop_size 128 128 -save_step 2000 -exp_name ./checkpoint/raindrop
 ```
 
-`-exp_name`:Specify the path for saving checkpoints
+**Note :**
 
-`-save_step`:Specify the interval for saving checkpoints
+During the training process, the training is divided into several stages, each using different learning rates, image sizes, and batch sizes. Therefore, we will execute different commands in stages to complete the training. 
 
-`-crop_size`:Specify the image size to be used during training
-
-`-checkpoint`:Specify the path of the checkpoint used for training recovery
-
-During the training process, the training is divided into several stages, each using different learning rates, image sizes, and batch sizes. Therefore, we will execute different commands in stages to complete the training.
+We encapsulated these training commands into the script `run.py`. If you just want to train with the default training configuration, run `python run.py` and follow the prompts to enter the training set directory, the test set directory and the checkpoint save location to automatically perform the training
 
 ## Test
 
-Code files with filenames starting with `test` are used to evaluate various datasets in `test`diretory. Modify the value of `val_data_dir` to the path of the test set, and then run the following command to perform the evaluation.
+The "test" directory holds scripts related to evaluation. `test.py` is used to perform inference on test sets with ground truth and automate evaluation. `test_no_gt.py`for inference on the real test set (no ground truth). `measure.py`is used for manual evaluation of SSIM, PSNR.
+
+**Demo** of using `test.py` or `test_no_gt.py`
 
 ```
-python test_outdoor_rain.py -save_place ./outdoor_rain -val_batch_size 1 -checkpoint path
+python test.py -save_place ./raindrop -checkpoint ./checkpoint/raindrop_ckpt -val_data_dir ./data/raindrop/test_a
 ```
 
-`-save_place`:Specify the location to save the repaired image and results.
+**Usage** of using `measure.py`: 
 
-`-checkpoint`:Select the path of the checkpoint to be used.
+Modify `gt_path` and `results_path` in the code (the ground truth directory and the directory where the repaired image is located), then run `python measure.py`.
+
+## Visual Images
+
+<details>
+<summary><strong>Image Desnowing(Snow100K)</strong> (click to expand) </summary>
+    <img src = "figure/snow100k.png">
+</details>
+
+<details>
+<summary><strong>Image Desnowing(Real Snow)</strong> (click to expand) </summary>
+    <img src = "figure/snow_real.png">
+</details>
+
+<details>
+<summary><strong>Raindrop Removal</strong> (click to expand) </summary>
+    <img src='figure/Raindrop.png'>
+</details>
+
+<details>
+<summary><strong>Deraining & Dehazing(Outdoor-Rain)</strong> (click to expand) </summary>
+    <img src='figure/outdoor_rain.png'>
+</details>
+
+<details>
+<summary><strong>Deraining & Dehazing(Real)</strong> (click to expand) </summary>
+    <img src='figure/rain_fog.png'>
+</details>
