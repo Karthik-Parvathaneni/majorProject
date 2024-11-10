@@ -29,9 +29,9 @@ torchvision==0.15.1
 
 ## Checkpoints
 
-Checkpoints are available on [Baidu Netdisk](https://pan.baidu.com/s/1p_O4WWGI4xyj4xA-WaSGeg?pwd=xf1g), password:xf1g
+Checkpoints are available on [Google Drive](https://drive.google.com/file/d/1y8-QKdJOEKyhfkwVZ7YdQBJD4LXMg97q/view?usp=drive_link).
 
-We also offer the link of [Google Drive](https://drive.google.com/file/d/1y8-QKdJOEKyhfkwVZ7YdQBJD4LXMg97q/view?usp=drive_link)
+We also offer the link of [Baidu Netdisk](https://pan.baidu.com/s/1p_O4WWGI4xyj4xA-WaSGeg?pwd=xf1g), password:xf1g
 
 ## Dataset Structure
 
