@@ -24,17 +24,18 @@ if not save_place.endswith('/'):
 
 
 commands = [
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0003 -num_steps 80000 -train_batch_size 8 -crop_size 128 128 -save_step 2000 -exp_name {save_place}',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0002 -num_steps 160000 -train_batch_size 8 -crop_size 128 128 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}80000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0001 -num_steps 250000 -train_batch_size 5 -crop_size 144 144 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}160000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.000075 -num_steps 330000 -train_batch_size 4 -crop_size 160 160 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}250000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.00005 -num_steps 420000 -train_batch_size 4 -crop_size 160 160 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}330000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.000025 -num_steps 500000 -train_batch_size 3 -crop_size 192 192 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}420000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.00001 -num_steps 580000 -train_batch_size 3 -crop_size 192 192 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}500000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.000005 -num_steps 660000 -train_batch_size 2 -crop_size 224 224 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}580000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0000025 -num_steps 720000 -train_batch_size 1 -crop_size 256 256 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}660000_ckpt',
-    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0000001 -num_steps 800000 -train_batch_size 1 -crop_size 320 320 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}720000_ckpt',
-    
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0003 -num_steps 50000 -train_batch_size 8 -crop_size 128 128 -save_step 2000 -exp_name {save_place}',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0002 -num_steps 120000 -train_batch_size 8 -crop_size 128 128 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}50000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0001 -num_steps 220000 -train_batch_size 5 -crop_size 144 144 -save_step 2000 -exp_name {save_place} -checkpoint {save_place}120000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.000075 -num_steps 320000 -train_batch_size 4 -crop_size 160 160 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}220000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.00005 -num_steps 410000 -train_batch_size 4 -crop_size 160 160 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}320000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.000025 -num_steps 500000 -train_batch_size 3 -crop_size 192 192 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}410000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.00001 -num_steps 580000 -train_batch_size 3 -crop_size 192 192 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}500000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0000075 -num_steps 660000 -train_batch_size 2 -crop_size 224 224 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}580000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.000005 -num_steps 680000 -train_batch_size 1 -crop_size 256 256 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}660000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.00000025 -num_steps 700000 -train_batch_size 1 -crop_size 320 320 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}680000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.0000001 -num_steps 720000 -train_batch_size 1 -crop_size 320 320 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}700000_ckpt',
+    f'python train_step.py -train_data_dir {train_data_dir} -val_data_dir {val_data_dir} -learning_rate 0.00002 -num_steps 800000 -train_batch_size 1 -crop_size 320 320 -save_step 1000 -exp_name {save_place} -checkpoint {save_place}720000_ckpt',
 ]
 
 # execute each command
