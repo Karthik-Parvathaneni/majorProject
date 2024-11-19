@@ -106,6 +106,23 @@ python test.py -save_place ./raindrop -checkpoint ./checkpoint/raindrop_ckpt -va
 
 Modify `gt_path` and `results_path` in the code (the ground truth directory and the directory where the repaired image is located), then run `python measure.py`.
 
+## Comparison Test Results
+
+<details>
+<summary><strong>Snow100K</strong> (click to expand) </summary>
+    <img src = "figure/tb_snow100k.png">
+</details>
+
+<details>
+<summary><strong>RainDrop</strong> (click to expand) </summary>
+    <img src = "figure/tb_raindrop.png">
+</details>
+
+<details>
+<summary><strong>Outdoor-Rain</strong> (click to expand) </summary>
+    <img src = "figure/tb_outdoor.png">
+</details>
+
 ## Visual Images
 
 <details>
