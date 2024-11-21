@@ -110,32 +110,32 @@ Modify `gt_path` and `results_path` in the code (the ground truth directory and 
 
 <details>
 <summary><strong>Snow100K</strong> (click to expand) </summary>
-    <img src = 'figure/tb_snow100k.png'>
+    <img src='figure/tb_snow100k.png'>
 </details>
 
 <details>
 <summary><strong>RainDrop</strong> (click to expand) </summary>
-    <img src = 'figure/tb_raindrop.png'>
+    <img src='figure/tb_raindrop.png'>
 </details>
 
 <details>
 <summary><strong>Outdoor-Rain</strong> (click to expand) </summary>
-    <img src = 'figure/tb_outdoor.png'>
+    <img src='figure/tb_outdoor.png'>
 </details>
+
 
 
 ## Visual Images
 
 <details>
 <summary><strong>Image Desnowing(Snow100K)</strong> (click to expand) </summary>
-    <img src = 'figure/snow100k.png'>
+    <img src='figure/snow100k.png'>
 </details>
 
 <details>
 <summary><strong>Image Desnowing(Real Snow)</strong> (click to expand) </summary>
-    <img src = 'figure/snow_real.png'>
+    <img src='figure/snow_real.png'>
 </details>
-
 
 <details>
 <summary><strong>Raindrop Removal</strong> (click to expand) </summary>
