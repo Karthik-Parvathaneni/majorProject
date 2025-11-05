@@ -1,6 +1,6 @@
 # WeatherRemover
 
-This is the source code for WeatherRemover(WeatherRemover: All-in-one Adverse Weather Removal with Multi-scale Feature Map Compression).
+This is the source code for WeatherRemover (WeatherRemover: All-in-one Adverse Weather Removal with Multi-scale Feature Map Compression). Accepted by **IEEE Transactions on Artificial Intelligence**.
 
 ## Architecture
 
