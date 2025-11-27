@@ -2,6 +2,8 @@
 
 This is the source code for WeatherRemover (WeatherRemover: All-in-one Adverse Weather Removal with Multi-scale Feature Map Compression). Accepted by **IEEE Transactions on Artificial Intelligence**.
 
+Paper link: [WeatherRemover (Early Access)](https://ieeexplore.ieee.org/document/11247943)
+
 ## Architecture
 
 ![Model Architecture](./figure/Backbone.png)
@@ -151,3 +153,4 @@ Modify `gt_path` and `results_path` in the code (the ground truth directory and 
 <summary><strong>Deraining & Dehazing(Real)</strong> (click to expand) </summary>
     <img src='figure/rain_fog.png'>
 </details>
+
