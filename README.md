@@ -28,6 +28,18 @@ timm==1.0.8
 torch==2.0.0
 torchvision==0.15.1
 ```
+## Datasets
+
+[RainDrop](https://github.com/rui1996/DeRaindrop)
+
+[Snow100K](https://sites.google.com/view/yunfuliu/desnownet)
+
+[Outdoor-Rain](https://github.com/liruoteng/HeavyRainRemoval)
+
+[All-Weather](https://github.com/jeya-maria-jose/TransWeather)
+
+[DAWN](https://data.mendeley.com/datasets/766ygrbt8y/3)
+
 
 ## Checkpoints
 
@@ -153,5 +165,6 @@ Modify `gt_path` and `results_path` in the code (the ground truth directory and 
 <summary><strong>Deraining & Dehazing(Real)</strong> (click to expand) </summary>
     <img src='figure/rain_fog.png'>
 </details>
+
 
 
