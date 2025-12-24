@@ -13,6 +13,18 @@ import torch.nn.functional as F
 from einops import rearrange
 import numbers
 
+class ASRA(nn.Module):
+    def __init__(self, kernel_size=3):
+        super().__init__()
+        self.conv = nn.Conv2d(2, 1, kernel_size, padding=kernel_size//2)
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        avg_pool = torch.mean(x, dim=1, keepdim=True)
+        max_pool, _ = torch.max(x, dim=1, keepdim=True)
+        attn = self.sigmoid(self.conv(torch.cat([avg_pool, max_pool], dim=1)))
+        return x * attn
+
 
 def save_image(img, file_directory):
     if not os.path.exists(os.path.dirname(file_directory)):
@@ -472,6 +484,11 @@ class CMFormer(nn.Module):
         else:
             print("No refineblock")
             self.refine = False
+
+        self.asra1 = ASRA()
+        self.asra2 = ASRA()
+        self.asra3 = ASRA()
+        
         self.initialize_weights()
 
     def initialize_weights(self):
@@ -512,6 +529,12 @@ class CMFormer(nn.Module):
         x = self.branch_gelu1(x) * self.patch_dit1(x1)
         # print(f"add x.shape={x.shape}")
 
+        for block in self.blocks1:
+            x = block(x)
+        x = self.asra1(x)
+        x = self.branch_gelu1(x) * self.patch_dit1(x1)
+
+
         # Down1
         x_to_s1 = x.clone()
         # print(f"bef down1 x.shape={x.shape}")
@@ -528,6 +551,12 @@ class CMFormer(nn.Module):
         # print(f"after block x.shape={x.shape}")
         x = self.branch_gelu2(x) * self.patch_dit2(x2)
         # print(f"x.shape={x.shape}")
+
+        for block in self.blocks2:
+            x = block(x)
+        x = self.asra2(x)
+        x = self.branch_gelu2(x) * self.patch_dit2(x2)
+
 
         # Down 2
         x_to_s2 = x.clone()
@@ -548,6 +577,11 @@ class CMFormer(nn.Module):
         # print(f"bef down3 x.shape={x.shape}")
         x4 = x.clone()  # [B, dim*2*2, H/4, H/4]
         # print(f"aft down3 x.shape={x.shape}")
+
+        for block in self.blocks3:
+            x = block(x)
+        x = self.asra3(x)
+        x = self.branch_gelu1(x) * self.patch_dit3(x3)
 
         # Down 3
         x = self.down3(x)

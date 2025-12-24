@@ -14,6 +14,8 @@ import torchvision.utils as tvu
 import cv2
 from model.cmformer import CMFormer
 
+from utils.losses import VGGPerceptualLoss, GradientLoss
+
 
 # --- Parse hyper-parameters  --- #
 parser = argparse.ArgumentParser(description='Hyper-parameters for network')
@@ -90,6 +92,11 @@ optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 net = net.to(device)
 net = nn.DataParallel(net, device_ids=device_ids)
 
+pixel_loss_fn = nn.L1Loss()
+perceptual_loss_fn = VGGPerceptualLoss().to(device)
+gradient_loss_fn = GradientLoss().to(device)
+
+
 # --- Load the network weight --- #
 chk = args.checkpoint
 if chk is not None:
@@ -109,13 +116,15 @@ val_filename1 = 'test.txt'
 
 # --- Load training data and validation/test data --- #
 lbl_train_data_loader = DataLoader(TrainData(crop_size, train_data_dir, labeled_name, random_flip=True, random_rotate=True), batch_size=train_batch_size,
-                                   shuffle=True, num_workers=8)
+                                   shuffle=True, num_workers=0)
 
 
 # val_data_loader = DataLoader(ValData(val_data_dir,val_filename), batch_size=val_batch_size, shuffle=False, num_workers=8)
 val_data_loader1 = DataLoader(ValData(val_data_dir, val_filename1), batch_size=val_batch_size, shuffle=False,
-                              num_workers=8)
+                              num_workers=0)
 
+def denormalize(x):
+    return (x + 1) / 2
 
 def hub_loss(img, gt):
     c = 0.03
@@ -143,14 +152,32 @@ while True:
         net.train()
         pred_image = net(input_image)
 
-        loss = hub_loss(pred_image, gt)
+        # loss = hub_loss(pred_image, gt)
+        l_pixel = pixel_loss_fn(pred_image, gt)
+        l_perc = perceptual_loss_fn(
+            denormalize(pred_image),
+            denormalize(gt))
+        l_grad = gradient_loss_fn(pred_image, gt)
+
+        loss = (
+            1.0 * l_pixel +
+            0.1 * l_perc +
+            0.05 * l_grad
+        )
+
+        
 
         loss.backward()
         optimizer.step()
         total_steps += 1
 
         if (total_steps % 10) == 0:
-            print('Steps: {0}, loss: {1}'.format(total_steps, loss))
+            # print('Steps: {0}, loss: {1}'.format(total_steps, loss))
+            print(f"Steps:{total_steps} | "
+                    f"L1:{l_pixel:.4f} | "
+                    f"Perc:{l_perc:.4f} | "
+                    f"Grad:{l_grad:.4f}")
+
         if (total_steps % 100) == 0:
             with torch.no_grad():
                 save_image(pred_image, os.path.join("./train_res", f"output.png"))

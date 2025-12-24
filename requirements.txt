@@ -1,5 +1,5 @@
 einops==0.8.0
-matplotlib==3.9.1
+matplotlib==3.9.1.post1
 numpy==2.0.1
 opencv_python_headless==4.8.1.78
 Pillow==10.4.0
