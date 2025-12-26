@@ -73,7 +73,7 @@ checkpoints/
 # Datasets
 # =========================
 raindrop/
-
+raindrop.zip
 
 # Optional large formats
 *.csv
